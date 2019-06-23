@@ -1,0 +1,27 @@
+[
+    {
+        "id": 1,
+        "text":"Take out the trash",
+        "completed": true
+    },
+    {
+        "id": 2,
+        "text":"Grocery shopping",
+        "completed": false
+    },
+    {
+        "id": 3,
+        "text":"Mow lawn",
+        "completed": true
+    },
+    {
+        "id": 4,
+        "text":"Catch up on arrested development",
+        "completed": false
+    },
+    {
+        "id": 5,
+        "text":"Clean gecko tank",
+        "completed": false
+    }
+]
