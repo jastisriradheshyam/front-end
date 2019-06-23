@@ -50,43 +50,8 @@ ReactDOM.render(
 class ToDo extends React.Component {
     constructor() {
         super();
-        // fetch('./data/todosData.json')
-        //     .then(function (response) {
-        //         return response.json();
-        //     })
-        //     .then(function (todosData) {
-        //         this.state = {
-        //             todos: todosData
-        //         }
-        //     });
         this.state = {
-            todos: [
-                {
-                    "id": 1,
-                    "text": "Take out the trash",
-                    "completed": true
-                },
-                {
-                    "id": 2,
-                    "text": "Grocery shopping",
-                    "completed": false
-                },
-                {
-                    "id": 3,
-                    "text": "Mow lawn",
-                    "completed": true
-                },
-                {
-                    "id": 4,
-                    "text": "Catch up on arrested development",
-                    "completed": false
-                },
-                {
-                    "id": 5,
-                    "text": "Clean gecko tank",
-                    "completed": false
-                }
-            ]
+            todos: []
         };
         this.handleChange = this.handleChange.bind(this);
     };
@@ -103,9 +68,15 @@ class ToDo extends React.Component {
             };
         });
     };
-    // componentDidMount() {
-
-    // }
+    componentDidMount() {
+        fetch('./data/todosData.json')
+            .then(response => response.json())
+            .then(todosData => {
+                this.setState({
+                    todos: todosData
+                });
+            });
+    }
 
     // may be depricated (16.3)
     // ComponentWillReceiveProps(nextProps) {
@@ -133,7 +104,7 @@ class ToDo extends React.Component {
     // getSnapshotBeforeUpdate() {
     //     can be used to create a backup of the current way things are
     // };
-    
+
     // Deprecated
     // componentWillUpdate() {
     // 
@@ -276,3 +247,110 @@ ReactDOM.render(React.createElement(testState2, null, null),
 ReactDOM.render(React.createElement(changeState, null, null),
     document.getElementById("changeState")
 );
+
+class Conditional extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            isLoggedIn: false
+        };
+        this.handleLoginState = this.handleLoginState.bind(this);
+    };
+    handleLoginState() {
+        this.setState(prevState => {
+            return {
+                isLoggedIn: !prevState.isLoggedIn
+            };
+        });
+    }
+    render() {
+        return React.createElement("div", null,
+            React.createElement('h1', null, `${this.state.isLoggedIn ? 'Logged in' : 'Logged out'}`),
+            React.createElement('button', {
+                onClick: this.handleLoginState
+            }, `${this.state.isLoggedIn ? 'Log out' : 'Log in'}`)
+        );
+    };
+};
+
+ReactDOM.render(React.createElement(Conditional, null, null),
+    document.getElementById("conditional")
+);
+
+class fetchExample extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            loading: false,
+            character: {}
+        };
+    };
+
+    componentDidMount() {
+        this.setState({ loading: true });
+        fetch("https://swapi.co/api/people/1")
+            .then(response => response.json())
+            .then(data => {
+                this.setState({
+                    loading: false,
+                    character: data
+                })
+            });
+    }
+
+    render() {
+        const text = this.state.loading ? "loading..." : this.state.character.name;
+        return React.createElement('div', null,
+            React.createElement('p', null, `${text}`)
+        );
+    };
+};
+
+ReactDOM.render(
+    React.createElement(fetchExample, null, null),
+    document.getElementById('fetchExample')
+);
+
+class formExample extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            firstName: "",
+            lastName: ""
+        };
+        this.handleChange = this.handleChange.bind(this);
+    };
+
+    handleChange(event) {
+        const { name, value } = event.target;
+        this.setState({
+            [name]: value
+        });
+    };
+
+    render() {
+        return React.createElement('form', null,
+            React.createElement('input', {
+                type: "text",
+                value: this.state.firstName,
+                name: "firstName",
+                placeholder: "First Name",
+                onChange: this.handleChange
+            }, null),
+            React.createElement("br", null, null),
+            React.createElement("input", {
+                type: "text",
+                value: this.state.lastName,
+                name: "lastName",
+                placeholder: "Last Name",
+                onChange: this.handleChange
+            }, null),
+            React.createElement("p",null,`${this.state.firstName} ${this.state.lastName}`)
+        );
+    }
+};
+
+ReactDOM.render(
+    React.createElement(formExample, null, null),
+    document.getElementById("formExample")
+)
