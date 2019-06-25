@@ -316,16 +316,18 @@ class formExample extends React.Component {
         super();
         this.state = {
             firstName: "",
-            lastName: ""
+            lastName: "",
+            isFriendly: true,
+            gender: "",
+            favColor: "blue",
+            textBoxData: "Some default value"
         };
         this.handleChange = this.handleChange.bind(this);
     };
 
     handleChange(event) {
-        const { name, value } = event.target;
-        this.setState({
-            [name]: value
-        });
+        const { name, value, type, checked } = event.target;
+        type === "checkbox" ? this.setState({ [name]: checked }) : this.setState({ [name]: value });
     };
 
     render() {
@@ -345,7 +347,50 @@ class formExample extends React.Component {
                 placeholder: "Last Name",
                 onChange: this.handleChange
             }, null),
-            React.createElement("p",null,`${this.state.firstName} ${this.state.lastName}`)
+            React.createElement("br", null, null),
+            React.createElement("textarea", {
+                value: this.state.textBoxData,
+                name: "textBoxData",
+                onChange: this.handleChange
+            }, null),
+            React.createElement("br", null, null),
+            React.createElement("input", {
+                type: "radio",
+                name: "gender",
+                value: "male",
+                checked: this.state.gender === "male",
+                onChange: this.handleChange
+            }, null),
+            React.createElement('label', null, `Male`),
+            React.createElement("br", null, null),
+            React.createElement("input", {
+                type: "radio",
+                name: "gender",
+                value: "female",
+                checked: this.state.gender === "female",
+                onChange: this.handleChange
+            }, null),
+            React.createElement('label', null, `Female`),
+            React.createElement("br", null, null),
+            React.createElement("input", {
+                type: "checkbox",
+                name: "isFriendly",
+                checked: this.state.isFriendly,
+                onChange: this.handleChange
+            }, null),
+            React.createElement('label', null, `Is friendly?`),
+            React.createElement("br", null, null),
+            React.createElement('label', null, `Favorite color:`),
+            React.createElement('select', {
+                value: this.state.favColor,
+                onChange: this.handleChange,
+                name: "favColor"
+            },
+                React.createElement('option', { value: "blue" }, `Blue`),
+                React.createElement('option', { value: "red" }, `Red`),
+                React.createElement('option', { value: "green" }, `Green`)
+            ),
+            React.createElement("h2", null, `${this.state.firstName} ${this.state.lastName}`)
         );
     }
 };
